@@ -1,0 +1,52 @@
+{% extends "news/includes/base.html" %}
+{% load static wagtailcore_tags %}
+
+{% block content %}
+<div class="container">
+    <div class="search-header mb-4">
+        <div class="divider">
+            <span>ಹುಡುಕಾಟದ ಫಲಿತಾಂಶಗಳು</span>
+            <div class="line"></div>
+        </div>
+        {% if query %}
+            <p class="search-query mt-3">
+                "{{ query }}" ಗಾಗಿ ಹುಡುಕಾಟದ ಫಲಿತಾಂಶಗಳು
+            </p>
+        {% endif %}
+    </div>
+
+    {# Search Form #}
+    <div class="search-form mb-4">
+        <form method="get" action="{% url 'news:search' %}" class="row g-3">
+            <div class="col-md-10">
+                <input type="text" name="q" value="{{ query }}" class="form-control" placeholder="ಹುಡುಕಿ...">
+            </div>
+            <div class="col-md-2">
+                <button type="submit" class="btn btn-primary w-100">ಹುಡುಕಿ</button>
+            </div>
+        </form>
+    </div>
+
+    {# Search Results #}
+    <div class="search-results">
+        {% if news_items %}
+            {% for article in news_items %}
+                <div class="search-result-item mb-4">
+                    {% include "news/includes/article_list_item.html" with article=article %}
+                </div>
+            {% endfor %}
+        {% else %}
+            {% if query %}
+                <div class="text-center py-5">
+                    <p>ಕ್ಷಮಿಸಿ, "{{ query }}" ಗಾಗಿ ಯಾವುದೇ ಫಲಿತಾಂಶಗಳು ಕಂಡುಬಂದಿಲ್ಲ.</p>
+                </div>
+            {% endif %}
+        {% endif %}
+    </div>
+
+    {# Pagination #}
+    {% if news_items %}
+        {% include "news/includes/pagination.html" with items=news_items %}
+    {% endif %}
+</div>
+{% endblock %}

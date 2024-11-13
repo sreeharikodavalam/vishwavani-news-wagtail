@@ -1,0 +1,29 @@
+
+{% extends "news/includes/base.html" %}
+{% load static wagtailcore_tags %}
+
+{% block content %}
+<div class="container">
+    <div class="trending-header mb-4">
+        <div class="divider">
+            <span>ಟ್ರೆಂಡಿಂಗ್ ನ್ಯೂಸ್</span>
+            <div class="line"></div>
+        </div>
+    </div>
+
+    <div class="row">
+        {% for article in news_items %}
+            <div class="col-md-4 mb-4">
+                <div class="trending-card position-relative">
+                    <div class="trending-number">{{ forloop.counter }}</div>
+                    {% include "news/includes/article_card.html" with article=article %}
+                </div>
+            </div>
+        {% empty %}
+            <div class="col-12 text-center py-5">
+                <p>ಪ್ರಸ್ತುತ ಯಾವುದೇ ಟ್ರೆಂಡಿಂಗ್ ಸುದ್ದಿಗಳು ಲಭ್ಯವಿಲ್ಲ.</p>
+            </div>
+        {% endfor %}
+    </div>
+</div>
+{% endblock %}

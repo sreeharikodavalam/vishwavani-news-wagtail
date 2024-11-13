@@ -1,0 +1,15 @@
+{% load wagtailcore_tags wagtailimages_tags static %}
+<div class="breaking-news-item">
+    {% if article.featured_image %}
+        {% image article.featured_image fill-400x300 class="img-fluid" %}
+    {% endif %}
+    <div class="breaking-news-content">
+        <span class="badge badge-danger">Breaking News</span>
+        <a href="{% pageurl article %}">
+            <h3>{{ article.title }}</h3>
+        </a>
+        <div class="meta">
+            <span class="time">{{ article.first_published_at|timesince }} ago</span>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,64 @@
+{% load static %}
+<header class="header-area">
+    <div class="main-header" style="background:#006eb7">
+        <div class="container container-md">
+            <div class="main-header-wrapper">
+                <div class="header-logo">
+                    <a href="/">
+                        <img src="{% static 'img/logo-a.png' %}" alt="ವಿಶ್ವವಾಣಿ">
+                    </a>
+                </div>
+
+                <div class="navbar-wrapper">
+                    <nav class="navbar-area">
+                        <ul>
+                            <li><a href="{% url 'news:news_index' %}" class="navtwhite">ತಾಜಾ ಸುದ್ದಿ</a></li>
+                            <li><a href="{% url 'news:video_index' %}" class="navtwhite">ಶಾರ್ಟ್ಸ್</a></li>
+                            <li><a href="#" class="navtwhite">ರಾಜ್ಯ</a></li>
+                            <li><a href="#" class="navtwhite">ಸಿನಿಮಾ</a></li>
+                            <li><a href="#" class="navtwhite">ವೆಬ್​ಸ್ಟೋರಿ</a></li>
+                            <li><a href="#" class="navtwhite">ಫೋಟೋಗ್ಯಾಲರಿ</a></li>
+                            <li><a href="#" class="navtwhite">ಕ್ರಿಕೆಟ್​</a></li>
+                            <li><a href="#" class="navtwhite">ವಿಡಿಯೋ</a></li>
+                            <li><a href="#" class="navtwhite">ವೈರಲ್​</a></li>
+                            <li><a href="#" class="navtwhite">ದೇಶ</a></li>
+
+                            <li class="dropdown">
+                                <a href="#" class="navtwhite">ಇತರರು</a>
+                                <ul>
+                                    <li><a href="#">ವಿದೇಶ</a></li>
+                                    <li><a href="#">ವಾಣಿಜ್ಯ</a></li>
+                                    <li><a href="#">ಜ್ಯೋತಿಷ್ಯ</a></li>
+                                    <li><a href="#">ಕ್ರೈಂ</a></li>
+                                    <li><a href="#">ಅಧ್ಯಾತ್ಮ</a></li>
+                                </ul>
+                            </li>
+                        </ul>
+                    </nav>
+                </div>
+
+                <div class="options-area">
+                    <div class="Search-popup">
+                        <div class="Search-icon twhite">
+                            <i class="icofont-search twhite"></i>
+                        </div>
+                        <div class="search-popup-box">
+                            <div class="search-box">
+                                <span><i class="icofont-search-1"></i></span>
+                                <input type="text" placeholder="Search...">
+                                <button>Search</button>
+                            </div>
+                            <div class="close-popup twhite">
+                                <i class="icofont-close-line twhite"></i>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="toggle-bar twhite">
+                        <span class="twhite"></span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</header>

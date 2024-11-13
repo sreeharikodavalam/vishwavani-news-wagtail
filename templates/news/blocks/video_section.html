@@ -1,0 +1,29 @@
+<section class="weekly-update-area">
+    <div class="container">
+        <div class="row">
+            <div class="col-6">
+                <div class="divider mb-3 mt-2">
+                    <span><i class="fas fa-video"></i> {{ value.title }}</span>
+                    <div class="line"></div>
+                </div>
+            </div>
+
+            {% if value.display_style == 'carousel' %}
+                <div class="col-6">
+                    <p class="text-right">
+                        <button class="btn btn-prevnext custom-prev-btn"><i class="fas fa-arrow-left"></i></button>
+                        <button class="btn btn-prevnext ml-3 custom-next-btn"><i class="fas fa-arrow-right"></i></button>
+                    </p>
+                </div>
+            {% endif %}
+
+            {% if value.display_style == 'grid' %}
+                {% include "template/blocks/layouts/video_grid.html" %}
+            {% elif value.display_style == 'carousel' %}
+                {% include "news/blocks/layouts/video_carousel.html" %}
+            {% else %}
+                {% include "news/blocks/layouts/video_featured.html" %}
+            {% endif %}
+        </div>
+    </div>
+</section>

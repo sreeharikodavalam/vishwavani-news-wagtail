@@ -1,0 +1,33 @@
+{% load wagtailcore_tags %}
+<section class="breaking-news-section">
+    <div class="container">
+        <div class="row">
+            <div class="col-12 my-3">
+                <div class="breakingNews" id="breakingNews1" style="border:1px solid #DDD">
+                    <div class="bn-title">
+                        <h2>{{ value.title }}</h2>
+                        <span></span>
+                    </div>
+                    <ul>
+                        {% for news in breaking_news %}
+                            <li>
+                                <a href="{% pageurl news %}" class="bold">{{ news.title }}</a>
+                            </li>
+                        {% endfor %}
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+{% block extra_js %}
+<script>
+    $("#breakingNews1").breakingNews({
+        effect: "slide-h",
+        autoplay: true,
+        timer: 3000,
+        color: "red"
+    });
+</script>
+{% endblock %}

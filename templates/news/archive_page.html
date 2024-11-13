@@ -1,0 +1,68 @@
+{% extends "news/includes/base.html" %}
+{% load static wagtailcore_tags %}
+
+{% block content %}
+<div class="container">
+    <div class="archive-header mb-4">
+        <div class="divider">
+            <span>ಸುದ್ದಿ ಆರ್ಕೈವ್</span>
+            <div class="line"></div>
+        </div>
+    </div>
+
+    {# Filter Form #}
+    <div class="archive-filters mb-4">
+        <form method="get" class="row g-3">
+            <div class="col-md-3">
+                <select name="year" class="form-select">
+                    <option value="">ವರ್ಷ ಆಯ್ಕೆಮಾಡಿ</option>
+                    {% for year in available_years %}
+                        <option value="{{ year }}" {% if selected_year == year %}selected{% endif %}>
+                            {{ year }}
+                        </option>
+                    {% endfor %}
+                </select>
+            </div>
+            <div class="col-md-3">
+                <select name="month" class="form-select">
+                    <option value="">ತಿಂಗಳು ಆಯ್ಕೆಮಾಡಿ</option>
+                    {% for month in available_months %}
+                        <option value="{{ month.number }}" {% if selected_month == month.number %}selected{% endif %}>
+                            {{ month.name }}
+                        </option>
+                    {% endfor %}
+                </select>
+            </div>
+            <div class="col-md-3">
+                <select name="category" class="form-select">
+                    <option value="">ವಿಭಾಗ ಆಯ್ಕೆಮಾಡಿ</option>
+                    {% for cat in available_categories %}
+                        <option value="{{ cat.slug }}" {% if selected_category == cat.slug %}selected{% endif %}>
+                            {{ cat.name }}
+                        </option>
+                    {% endfor %}
+                </select>
+            </div>
+            <div class="col-md-3">
+                <button type="submit" class="btn btn-primary w-100">ಹುಡುಕಿ</button>
+            </div>
+        </form>
+    </div>
+
+    {# News List #}
+    <div class="archive-results">
+        {% for article in news_items %}
+            <div class="archive-item mb-4">
+                {% include "news/includes/article_list_item.html" with article=article %}
+            </div>
+        {% empty %}
+            <div class="text-center py-5">
+                <p>ಆಯ್ಕೆ ಮಾಡಿದ ಮಾನದಂಡಗಳಿಗೆ ಯಾವುದೇ ಲೇಖನಗಳು ಲಭ್ಯವಿಲ್ಲ.</p>
+            </div>
+        {% endfor %}
+    </div>
+
+    {# Pagination #}
+    {% include "news/includes/pagination.html" with items=news_items %}
+</div>
+{% endblock %}

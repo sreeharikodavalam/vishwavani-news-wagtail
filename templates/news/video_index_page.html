@@ -1,0 +1,130 @@
+{% extends "news/includes/base.html" %}
+{% load static wagtailcore_tags wagtailimages_tags %}
+
+{% block content %}
+<div class="container">
+    <div class="row">
+        <div class="col-12">
+            <div class="divider mb-4">
+                <span>ವಿಡಿಯೋಗಳು</span>
+                <div class="line"></div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
+        {% for video in video_items %}
+            <div class="col-md-4 mb-4">
+                <div class="video-card">
+                    <div class="image-container position-relative">
+                        {% if video.featured_image %}
+                            {% image video.featured_image fill-400x300 class="img-fluid rounded" %}
+                            <img src="{% static 'img/play-button.png' %}" class="play-button" alt="Play">
+                        {% endif %}
+                    </div>
+                    <div class="video-content mt-3">
+                        <h3 class="video-title">
+                            <a href="{% pageurl video %}">{{ video.title }}</a>
+                        </h3>
+                        {% if video.duration %}
+                            <span class="duration badge vbadge">{{ video.duration }}</span>
+                        {% endif %}
+                        <div class="video-meta mt-2">
+                            <span class="video-date">{{ video.first_published_at|date }}</span>
+                            {% if video.view_count %}
+                                <span class="view-count">{{ video.view_count }} ವೀಕ್ಷಣೆಗಳು</span>
+                            {% endif %}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        {% empty %}
+            <div class="col-12">
+                <p class="text-center">ಯಾವುದೇ ವಿಡಿಯೋಗಳು ಲಭ್ಯವಿಲ್ಲ.</p>
+            </div>
+        {% endfor %}
+    </div>
+
+    {# Pagination #}
+    {% if video_items.paginator.num_pages > 1 %}
+        <div class="pagination justify-content-center mt-4">
+            <nav aria-label="Page navigation">
+                <ul class="pagination">
+                    {% if video_items.has_previous %}
+                        <li class="page-item">
+                            <a class="page-link" href="?page=1">&laquo; First</a>
+                        </li>
+                        <li class="page-item">
+                            <a class="page-link" href="?page={{ video_items.previous_page_number }}">Previous</a>
+                        </li>
+                    {% endif %}
+
+                    <li class="page-item active">
+                        <span class="page-link">
+                            Page {{ video_items.number }} of {{ video_items.paginator.num_pages }}
+                        </span>
+                    </li>
+
+                    {% if video_items.has_next %}
+                        <li class="page-item">
+                            <a class="page-link" href="?page={{ video_items.next_page_number }}">Next</a>
+                        </li>
+                        <li class="page-item">
+                            <a class="page-link" href="?page={{ video_items.paginator.num_pages }}">Last &raquo;</a>
+                        </li>
+                    {% endif %}
+                </ul>
+            </nav>
+        </div>
+    {% endif %}
+</div>
+
+{% block extra_css %}
+<style>
+    .video-card {
+        transition: transform 0.3s ease;
+    }
+    .video-card:hover {
+        transform: translateY(-5px);
+    }
+    .image-container {
+        overflow: hidden;
+        border-radius: 8px;
+    }
+    .play-button {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        width: 50px;
+        height: 50px;
+        opacity: 0.8;
+        transition: opacity 0.3s ease;
+    }
+    .video-card:hover .play-button {
+        opacity: 1;
+    }
+    .video-title {
+        font-size: 1.1rem;
+        margin-bottom: 0.5rem;
+    }
+    .video-title a {
+        color: inherit;
+        text-decoration: none;
+    }
+    .video-meta {
+        font-size: 0.9rem;
+        color: #666;
+    }
+    .duration {
+        background: #006eb7;
+        color: white;
+        padding: 0.2rem 0.5rem;
+        border-radius: 3px;
+    }
+    .view-count {
+        margin-left: 1rem;
+    }
+</style>
+{% endblock %}
+{% endblock %}

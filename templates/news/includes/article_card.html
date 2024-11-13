@@ -1,0 +1,26 @@
+{% load wagtailcore_tags wagtailimages_tags static %}
+<div class="news1con">
+    {% if article.featured_image %}
+        <div class="text-center">
+            {% image article.featured_image fill-400x300 class="img-fluid news1img" %}
+        </div>
+    {% endif %}
+    <div>
+        <a href="{% pageurl article %}">
+            <h3 class="news1title news1trim">{{ article.title }}</h3>
+        </a>
+        {% if article.intro %}
+            <p class="news1trim">{{ article.intro }}</p>
+        {% endif %}
+        <div class="article-meta">
+            {% if article.author and article.show_author %}
+                <span class="author">
+                    <i class="fas fa-user"></i> {{ article.author.name }}
+                </span>
+            {% endif %}
+            <span class="date">
+                <i class="far fa-clock"></i> {{ article.first_published_at|timesince }} ago
+            </span>
+        </div>
+    </div>
+</div>

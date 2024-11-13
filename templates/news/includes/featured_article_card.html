@@ -1,0 +1,34 @@
+{% load wagtailcore_tags wagtailimages_tags static %}
+<div class="news1con featured">
+    {% if article.featured_image %}
+        <div class="featured-image">
+            {% image article.featured_image fill-800x500 class="img-fluid news1img" %}
+            {% if article.is_breaking_news %}
+                <span class="badge badge-danger">Breaking News</span>
+            {% endif %}
+        </div>
+    {% endif %}
+    <div class="featured-content">
+        <a href="{% pageurl article %}">
+            <h2 class="news1title">{{ article.title }}</h2>
+        </a>
+        {% if article.intro %}
+            <p class="intro">{{ article.intro|truncatewords:30 }}</p>
+        {% endif %}
+        <div class="article-meta">
+            {% if article.author and article.show_author %}
+                <span class="author">
+                    <i class="fas fa-user"></i> {{ article.author.name }}
+                </span>
+            {% endif %}
+            <span class="date">
+                <i class="far fa-clock"></i> {{ article.first_published_at|timesince }} ago
+            </span>
+            {% if article.read_time %}
+                <span class="read-time">
+                    <i class="far fa-clock"></i> {{ article.read_time }} min read
+                </span>
+            {% endif %}
+        </div>
+    </div>
+</div>

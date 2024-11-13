@@ -1,0 +1,69 @@
+{% extends "base/base.html" %}
+{% load news_tags %}
+{% load static %}
+{% load wagtailcore_tags %}
+{% load wagtailimages_tags %}
+{% load wagtailuserbar %}
+
+{% block content %}
+    {# Breadcrumbs #}
+    <div class="container">
+        <nav aria-label="breadcrumb">
+            <ol class="breadcrumb">
+                {% for page in breadcrumbs %}
+                    {% if forloop.last %}
+                        <li class="breadcrumb-item active">{{ page.title }}</li>
+                    {% else %}
+                        <li class="breadcrumb-item"><a href="{% pageurl page %}">{{ page.title }}</a></li>
+                    {% endif %}
+                {% endfor %}
+            </ol>
+        </nav>
+    </div>
+
+    {# Main Content #}
+    {% block news_content %}{% endblock %}
+
+    {# Common Sidebar #}
+    {% block sidebar %}
+        <div class="news-sidebar">
+            {# Trending News #}
+            {% get_trending_news as trending_news %}
+            {% if trending_news %}
+                <div class="sidebar-section">
+                    <h3 class="section-title">Trending News</h3>
+                    {% for article in trending_news %}
+                        {% include "news/includes/sidebar_article_card.html" with article=article %}
+                    {% endfor %}
+                </div>
+            {% endif %}
+
+            {# Popular Categories #}
+            {% get_popular_categories as categories %}
+            {% if categories %}
+                <div class="sidebar-section">
+                    <h3 class="section-title">Popular Categories</h3>
+                    <div class="category-list">
+                        {% for category in categories %}
+                            <a href="{% url 'news:category_view' category.slug %}" class="category-tag">
+                                {{ category.name }}
+                                <span class="count">({{ category.article_count }})</span>
+                            </a>
+                        {% endfor %}
+                    </div>
+                </div>
+            {% endif %}
+
+            {# Featured Authors #}
+            {% get_featured_authors as authors %}
+            {% if authors %}
+                <div class="sidebar-section">
+                    <h3 class="section-title">Featured Authors</h3>
+                    {% for author in authors %}
+                        {% include "news/includes/author_card.html" with author=author %}
+                    {% endfor %}
+                </div>
+            {% endif %}
+        </div>
+    {% endblock %}
+{% endblock %}

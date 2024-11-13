@@ -1,0 +1,15 @@
+<div class="share-buttons">
+    <h5>Share this article</h5>
+    <a href="https://www.facebook.com/sharer/sharer.php?u={{ request.build_absolute_uri }}"
+       target="_blank" class="btn btn-facebook">
+        <i class="fab fa-facebook-f"></i> Share
+    </a>
+    <a href="https://twitter.com/intent/tweet?url={{ request.build_absolute_uri }}&text={{ article.title|urlencode }}"
+       target="_blank" class="btn btn-twitter">
+        <i class="fab fa-twitter"></i> Tweet
+    </a>
+    <a href="https://wa.me/?text={{ article.title|urlencode }}%20{{ request.build_absolute_uri|urlencode }}"
+       target="_blank" class="btn btn-whatsapp">
+        <i class="fab fa-whatsapp"></i> Share
+    </a>
+</div>

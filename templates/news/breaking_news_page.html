@@ -1,0 +1,27 @@
+{% extends "base.html" %}
+{% load static wagtailcore_tags %}
+
+{% block content %}
+<div class="container">
+    <div class="breaking-header mb-4">
+        <div class="divider">
+            <span>ಬ್ರೇಕಿಂಗ್ ನ್ಯೂಸ್</span>
+            <div class="line"></div>
+        </div>
+    </div>
+
+    <div class="row">
+        {% for article in news_items %}
+            <div class="col-md-4 mb-4">
+                {% include "news/includes/article_card.html" with article=article %}
+            </div>
+        {% empty %}
+            <div class="col-12 text-center py-5">
+                <p>ಪ್ರಸ್ತುತ ಯಾವುದೇ ಬ್ರೇಕಿಂಗ್ ನ್ಯೂಸ್ ಲಭ್ಯವಿಲ್ಲ.</p>
+            </div>
+        {% endfor %}
+    </div>
+
+    {% include "news/includes/pagination.html" with items=news_items %}
+</div>
+{% endblock %}

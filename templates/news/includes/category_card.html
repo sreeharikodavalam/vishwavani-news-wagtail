@@ -1,0 +1,10 @@
+{% load wagtailcore_tags wagtailimages_tags static %}
+<div class="category-card">
+    {% if category.icon %}
+        {% image category.icon fill-50x50 class="category-icon" %}
+    {% endif %}
+    <h4 class="category-name">{{ category.name }}</h4>
+    <div class="category-stats">
+        <span class="article-count">{{ category.articles.count }} articles</span>
+    </div>
+</div>

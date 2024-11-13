@@ -1,0 +1,256 @@
+{% extends "base/base.html" %}
+{% load static wagtailcore_tags wagtailimages_tags news_filters %}
+
+{% block content %}
+    {# Top Ad Section #}
+    <section class="ad-section">
+        <div class="mt-4 container d-flex align-items-center justify-content-center" style="background:#ddd;height:100px;">
+            [Advertisement Banner]
+        </div>
+    </section>
+
+    {# Breaking News Ticker - if enabled #}
+    {% if page.show_breaking_news %}
+        <section class="weekly-update-area mt-4">
+            <div class="container">
+                <div class="row">
+                    <div class="col-12 my-3">
+                        <div class="breakingNews" id="bn1" style="border:1px solid #DDD">
+                            <div class="bn-title">
+                                <h2>Headlines</h2><span></span>
+                            </div>
+                            <ul>
+                                {% for news in breaking_news %}
+                                    <li><a href="{% pageurl news %}" class="bold">{{ news.title }}</a></li>
+                                {% endfor %}
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    {% endif %}
+
+    {# Main Content Area #}
+    <main class="site-main">
+        {# Trending Topics Bar - if enabled #}
+        {% if page.show_trending_topics and trending_topics %}
+            <section class="trending-topics py-2 bg-light">
+                <div class="container">
+                    <div class="d-flex align-items-center">
+                        <span class="me-3"><i class="fas fa-fire"></i> Trending:</span>
+                        <div class="topics-scroll">
+                            {% for topic in trending_topics %}
+                                <a href="{% url 'news:topic_view' topic.slug %}" class="badge vbadge">
+                                    {{ topic.name }}
+                                </a>
+                            {% endfor %}
+                        </div>
+                    </div>
+                </div>
+            </section>
+        {% endif %}
+
+        {# Dynamic Content Sections #}
+        {% for block in page.content_sections %}
+            {% include_block block %}
+        {% endfor %}
+
+        {# Three Column News Section #}
+        <section class="weekly-update-area" style="margin-top:40px">
+            <div class="container">
+                <div class="row">
+                    {# Left Column - State News #}
+                    <div class="col-lg-4">
+                        <div class="divider mb-3">
+                            <span>ರಾಜ್ಯ</span>
+                            <div class="line"></div>
+                        </div>
+                        {% with state_news=page.get_state_news|slice:":3" %}
+                            {% for news in state_news %}
+                                {% if forloop.first %}
+                                    <div class="card">
+                                        {% if news.featured_image %}
+                                            {% image news.featured_image fill-400x300 class="card-img-top" %}
+                                        {% endif %}
+                                        <div class="card-body">
+                                            <a href="{% pageurl news %}">
+                                                <h3 class="news2title">{{ news.title }}</h3>
+                                            </a>
+                                        </div>
+                                    </div>
+                                {% else %}
+                                    <div class="card mt-2">
+                                        <div class="card-body">
+                                            <a href="{% pageurl news %}">
+                                                <h3 class="news2title">{{ news.title }}</h3>
+                                            </a>
+                                        </div>
+                                    </div>
+                                {% endif %}
+                            {% endfor %}
+                        {% endwith %}
+                    </div>
+
+                    {# Middle Column - National News #}
+                    <div class="col-lg-4">
+                        <div class="divider mb-3">
+                            <span>ರಾಷ್ಟ್ರೀಯ</span>
+                            <div class="line"></div>
+                        </div>
+                        {% with national_news=page.get_national_news|slice:":3" %}
+                            {% for news in national_news %}
+                                {% include "news/includes/article_card.html" with article=news %}
+                            {% endfor %}
+                        {% endwith %}
+                    </div>
+
+                    {# Right Column - International News #}
+                    <div class="col-lg-4">
+                        <div class="divider mb-3">
+                            <span>ಅಂತರರಾಷ್ಟ್ರೀಯ</span>
+                            <div class="line"></div>
+                        </div>
+                        {% with international_news=page.get_international_news|slice:":3" %}
+                            {% for news in international_news %}
+                                {% include "news/includes/article_card.html" with article=news %}
+                            {% endfor %}
+                        {% endwith %}
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        {# Authors Section #}
+        {% if page.show_popular_authors and popular_authors %}
+            <section class="weekly-update-area mt-4">
+                <div class="container">
+                    <div id="multiItemCarousel" class="col-lg-12 carousel slide py-4 px-3 mt-3" 
+                         data-bs-ride="carousel" style="background:#006eb7">
+                        <div class="my-4 px-3" data-aos="zoom-in" style="margin-top:0 !important">
+                            <h2 data-aos="fade-up" data-aos-delay="50" style="color: #FFF !important">
+                                Our Authors
+                            </h2>
+                        </div>
+
+                        <div class="carousel-inner">
+                            {% for author_group in popular_authors|group_by:3 %}
+                                <div class="carousel-item {% if forloop.first %}active{% endif %}">
+                                    <div class="row">
+                                        {% for author in author_group %}
+                                            <div class="col-4 text-center">
+                                                {% if author.profile_image %}
+                                                    {% image author.profile_image fill-150x150 class="rounded-circle" %}
+                                                {% endif %}
+                                                <p class="profile-name">{{ author.name }}</p>
+                                            </div>
+                                        {% endfor %}
+                                    </div>
+                                </div>
+                            {% endfor %}
+                        </div>
+
+                        <button class="carousel-control-prev" type="button" 
+                                data-bs-target="#multiItemCarousel" data-bs-slide="prev">
+                            <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                            <span class="visually-hidden">Previous</span>
+                        </button>
+                        <button class="carousel-control-next" type="button" 
+                                data-bs-target="#multiItemCarousel" data-bs-slide="next">
+                            <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                            <span class="visually-hidden">Next</span>
+                        </button>
+                    </div>
+                </div>
+            </section>
+        {% endif %}
+
+        {# Weather and Gold Rates Section #}
+        {% if page.show_weather_widget %}
+            <section class="weekly-update-area mt-4">
+                <div class="container">
+                    <div class="row">
+                        <div class="col-lg-8">
+                            {# Weather Widget #}
+                            <div style="border:1px solid #DDD">
+                                <div id="weather-widget"></div>
+                            </div>
+                        </div>
+                        <div class="col-lg-4">
+                            {# Gold Rates #}
+                            <img class="img-fluid" src="{% static 'img/gold.png' %}" style="height:100%">
+                        </div>
+                    </div>
+                </div>
+            </section>
+        {% endif %}
+
+        {# Subscribe Newsletter Section #}
+        <section class="subscribe-area" style="background-image:url({% static 'img/subg.jpg' %})" 
+                 data-aos="fade-up" data-aos-anchor-placement="top-bottom">
+            <div class="container">
+                <div class="row">
+                    <div class="subscribe-wrapper">
+                        <h3>Subscribe Newsletter</h3>
+                        <div class="search-box">
+                            <span><i class="icofont-envelope"></i></span>
+                            <input type="text" placeholder="Enter your mail">
+                            <button>Subscribe</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+{% endblock %}
+
+{% block extra_css %}
+<style>
+    .topics-scroll {
+        overflow-x: auto;
+        white-space: nowrap;
+        -webkit-overflow-scrolling: touch;
+        padding: 5px 0;
+    }
+    
+    .profile-name {
+        color: white;
+        margin-top: 10px;
+        font-size: 1.2em;
+    }
+
+    .carousel-control-prev-icon,
+    .carousel-control-next-icon {
+        background-color: rgba(0,0,0,0.5);
+        border-radius: 50%;
+        padding: 20px;
+    }
+
+    .vbadge {
+        display: inline-block;
+        margin-right: 10px;
+        padding: 5px 15px;
+        border-radius: 20px;
+    }
+
+    /* Add more custom styles as needed */
+</style>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+    // Initialize breaking news ticker
+    $("#bn1").breakingNews({
+        effect: "slide-h",
+        autoplay: true,
+        timer: 3000,
+        color: "red"
+    });
+
+    // Initialize weather widget
+    // Add your weather widget initialization code here
+
+    // Initialize any carousels
+    // Add your carousel initialization code here
+</script>
+{% endblock %}

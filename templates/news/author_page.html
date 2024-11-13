@@ -1,0 +1,72 @@
+{% extends "news/includes/base.html" %}
+{% load static wagtailcore_tags wagtailimages_tags %}
+
+{% block content %}
+<div class="container">
+    <div class="author-profile mb-5">
+        <div class="row">
+            <div class="col-md-3">
+                {% if author.profile_image %}
+                    {% image author.profile_image fill-300x300 class="img-fluid rounded-circle" %}
+                {% endif %}
+            </div>
+            <div class="col-md-9">
+                <h1 class="author-name">{{ author.name }}</h1>
+                {% if author.designation %}
+                    <h4 class="author-designation text-muted">{{ author.designation }}</h4>
+                {% endif %}
+                {% if author.bio %}
+                    <div class="author-bio mt-3">{{ author.bio|richtext }}</div>
+                {% endif %}
+                
+                <div class="author-stats mt-4">
+                    <span class="badge vbadge">ಲೇಖನಗಳು: {{ author.article_count }}</span>
+                    <span class="badge vbadge">ವೀಕ್ಷಣೆಗಳು: {{ author.total_views }}</span>
+                </div>
+
+                {% if author.facebook_url or author.twitter_url or author.instagram_url %}
+                    <div class="author-social mt-3">
+                        {% if author.facebook_url %}
+                            <a href="{{ author.facebook_url }}" class="btn btn-social btn-facebook" target="_blank">
+                                <i class="fab fa-facebook-f"></i>
+                            </a>
+                        {% endif %}
+                        {% if author.twitter_url %}
+                            <a href="{{ author.twitter_url }}" class="btn btn-social btn-twitter" target="_blank">
+                                <i class="fab fa-twitter"></i>
+                            </a>
+                        {% endif %}
+                        {% if author.instagram_url %}
+                            <a href="{{ author.instagram_url }}" class="btn btn-social btn-instagram" target="_blank">
+                                <i class="fab fa-instagram"></i>
+                            </a>
+                        {% endif %}
+                    </div>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+
+    <div class="author-articles">
+        <div class="divider mb-4">
+            <span>{{ author.name }} ಅವರ ಲೇಖನಗಳು</span>
+            <div class="line"></div>
+        </div>
+
+        <div class="row">
+            {% for article in news_items %}
+                <div class="col-md-4 mb-4">
+                    {% include "news/includes/article_card.html" with article=article %}
+                </div>
+            {% empty %}
+                <div class="col-12">
+                    <p class="text-center">ಈ ಲೇಖಕರಿಂದ ಯಾವುದೇ ಲೇಖನಗಳು ಇನ್ನೂ ಲಭ್ಯವಿಲ್ಲ.</p>
+                </div>
+            {% endfor %}
+        </div>
+
+        {# Pagination #}
+        {% include "news/includes/pagination.html" with items=news_items %}
+    </div>
+</div>
+{% endblock %}

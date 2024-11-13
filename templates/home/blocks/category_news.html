@@ -1,0 +1,25 @@
+
+<section class="category-news">
+    <div class="container">
+        <div class="divider mb-3">
+            <span>{{ value.category.name }}</span>
+            <div class="line"></div>
+        </div>
+
+        <div class="row">
+            {% if value.display_style == 'grid' %}
+                {% for article in value.category.get_articles|slice:value.news_count %}
+                    <div class="col-md-3">
+                        {% include "news/includes/article_card.html" with article=article %}
+                    </div>
+                {% endfor %}
+            {% else %}
+                <div class="col-12">
+                    {% for article in value.category.get_articles|slice:value.news_count %}
+                        {% include "news/includes/article_list_item.html" with article=article %}
+                    {% endfor %}
+                </div>
+            {% endif %}
+        </div>
+    </div>
+</section>

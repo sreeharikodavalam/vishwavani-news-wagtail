@@ -1,0 +1,18 @@
+{% load wagtailcore_tags wagtailimages_tags static %}
+<div class="author-card text-center">
+    {% if author.profile_image %}
+        {% image author.profile_image fill-150x150 class="rounded-circle" %}
+    {% endif %}
+    <h4 class="profile-name">{{ author.name }}</h4>
+    {% if author.designation %}
+        <p class="designation">{{ author.designation }}</p>
+    {% endif %}
+    <div class="social-links">
+        {% if author.facebook_url %}
+            <a href="{{ author.facebook_url }}" target="_blank"><i class="fab fa-facebook"></i></a>
+        {% endif %}
+        {% if author.twitter_url %}
+            <a href="{{ author.twitter_url }}" target="_blank"><i class="fab fa-twitter"></i></a>
+        {% endif %}
+    </div>
+</div>

@@ -1,0 +1,77 @@
+{% load wagtailcore_tags %}
+{% load static %}
+{% load wagtailimages_tags %}
+<section class="video-section mb-4" style="background: #e5e5e5; padding: 40px 0;">
+    <div class="container">
+        <div class="row">
+            <div class="col-6">
+                <div class="divider mb-3">
+                    <span><i class="fas fa-video"></i> {{ value.title }}</span>
+                    <div class="line"></div>
+                </div>
+            </div>
+            {% if value.layout == 'carousel' %}
+                <div class="col-6">
+                    <p class="text-right" style="text-align: right;">
+                        <button class="btn btn-prevnext video-prev"><i class="fas fa-arrow-left"></i></button>
+                        <button class="btn btn-prevnext ml-3 video-next"><i class="fas fa-arrow-right"></i></button>
+                    </p>
+                </div>
+            {% endif %}
+        </div>
+
+        {% if value.layout == 'carousel' %}
+            <div class="video-carousel owl-carousel">
+        {% else %}
+            <div class="row">
+        {% endif %}
+            {% for video in videos %}
+                {% if value.layout == 'carousel' %}
+                    <div class="item">
+                {% else %}
+                    <div class="col-md-3">
+                {% endif %}
+                    <div class="single-video">
+                        <div class="image-container">
+                            {% if video.featured_image %}
+                                {% image video.featured_image fill-400x300 class="img-fluid newslimg" %}
+                                <img src="{% static 'img/play-button.png' %}" class="play-button2" alt="Play">
+                            {% endif %}
+                        </div>
+                        <div class="video-content mt-3">
+                            <h3 class="video-title">
+                                <a href="{% pageurl video %}">{{ video.title }}</a>
+                            </h3>
+                        </div>
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+    </div>
+</section>
+
+{% block extra_js %}
+{% if value.layout == 'carousel' %}
+<script>
+    $('.video-carousel').owlCarousel({
+        loop: true,
+        margin: 30,
+        nav: false,
+        dots: true,
+        responsive: {
+            0: { items: 1 },
+            768: { items: 2 },
+            992: { items: 4 }
+        }
+    });
+
+    $('.video-prev').click(function() {
+        $('.video-carousel').trigger('prev.owl.carousel');
+    });
+
+    $('.video-next').click(function() {
+        $('.video-carousel').trigger('next.owl.carousel');
+    });
+</script>
+{% endif %}
+{% endblock %}

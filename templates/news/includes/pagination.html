@@ -1,0 +1,45 @@
+{% if items.paginator.num_pages > 1 %}
+<nav aria-label="Page navigation" class="mt-4">
+    <ul class="pagination justify-content-center">
+        {% if items.has_previous %}
+            <li class="page-item">
+                <a class="btn btn-prevnext" href="?page=1{% if request.GET.q %}&q={{ request.GET.q }}{% endif %}">
+                    <i class="fas fa-angle-double-left"></i>
+                </a>
+            </li>
+            <li class="page-item">
+                <a class="btn btn-prevnext" href="?page={{ items.previous_page_number }}{% if request.GET.q %}&q={{ request.GET.q }}{% endif %}">
+                    <i class="fas fa-angle-left"></i>
+                </a>
+            </li>
+        {% endif %}
+
+        {% for num in items.paginator.page_range %}
+            {% if items.number == num %}
+                <li class="page-item active">
+                    <span class="btn btn-prevnext">{{ num }}</span>
+                </li>
+            {% elif num > items.number|add:'-3' and num < items.number|add:'3' %}
+                <li class="page-item">
+                    <a class="btn btn-prevnext" href="?page={{ num }}{% if request.GET.q %}&q={{ request.GET.q }}{% endif %}">
+                        {{ num }}
+                    </a>
+                </li>
+            {% endif %}
+        {% endfor %}
+
+        {% if items.has_next %}
+            <li class="page-item">
+                <a class="btn btn-prevnext" href="?page={{ items.next_page_number }}{% if request.GET.q %}&q={{ request.GET.q }}{% endif %}">
+                    <i class="fas fa-angle-right"></i>
+                </a>
+            </li>
+            <li class="page-item">
+                <a class="btn btn-prevnext" href="?page={{ items.paginator.num_pages }}{% if request.GET.q %}&q={{ request.GET.q }}{% endif %}">
+                    <i class="fas fa-angle-double-right"></i>
+                </a>
+            </li>
+        {% endif %}
+    </ul>
+</nav>
+{% endif %}

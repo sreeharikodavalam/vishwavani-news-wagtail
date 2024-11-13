@@ -1,0 +1,61 @@
+{% extends "news/includes/base.html" %}
+{% load static wagtailcore_tags %}
+
+{% block content %}
+<div class="container">
+    <div class="topic-header mb-4">
+        <div class="divider">
+            <span>{{ topic.name }}</span>
+            <div class="line"></div>
+        </div>
+        {% if topic.description %}
+            <p class="topic-description mt-3">{{ topic.description }}</p>
+        {% endif %}
+        
+        {% if topic.featured_image %}
+            <div class="topic-featured-image mt-3">
+                {% image topic.featured_image width-1200 class="img-fluid" %}
+            </div>
+        {% endif %}
+    </div>
+
+    <div class="row">
+        <div class="col-lg-8">
+            {# News Grid #}
+            <div class="row">
+                {% for article in news_items %}
+                    <div class="col-md-6 mb-4">
+                        {% include "news/includes/article_card.html" with article=article %}
+                    </div>
+                {% empty %}
+                    <div class="col-12">
+                        <p class="text-center">ಈ ವಿಷಯದ ಬಗ್ಗೆ ಯಾವುದೇ ಲೇಖನಗಳು ಇನ್ನೂ ಲಭ್ಯವಿಲ್ಲ.</p>
+                    </div>
+                {% endfor %}
+            </div>
+
+            {# Pagination #}
+            {% include "news/includes/pagination.html" with items=news_items %}
+        </div>
+
+        <div class="col-lg-4">
+            {# Related Topics #}
+            {% if topic.related_topics.all %}
+                <div class="sidebar-section mb-4">
+                    <div class="divider mb-3">
+                        <span>ಸಂಬಂಧಿತ ವಿಷಯಗಳು</span>
+                        <div class="line"></div>
+                    </div>
+                    <div class="related-topics">
+                        {% for related_topic in topic.related_topics.all %}
+                            <a href="{% url 'news:topic_view' related_topic.slug %}" class="badge vbadge">
+                                {{ related_topic.name }}
+                            </a>
+                        {% endfor %}
+                    </div>
+                </div>
+            {% endif %}
+        </div>
+    </div>
+</div>
+{% endblock %}

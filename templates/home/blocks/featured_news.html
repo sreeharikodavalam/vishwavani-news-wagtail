@@ -1,0 +1,26 @@
+<section class="featured-news {% if value.display_style == 'slider' %}featured-slider{% endif %}">
+    <div class="container">
+        {% if value.title %}
+            <div class="divider mb-3">
+                <span>{{ value.title }}</span>
+                <div class="line"></div>
+            </div>
+        {% endif %}
+
+        {% if value.display_style == 'slider' %}
+            <div class="featured-news-carousel owl-carousel">
+                {% for article in value.categories %}
+                    {% include "news/includes/featured_article_card.html" with article=article %}
+                {% endfor %}
+            </div>
+        {% else %}
+            <div class="row">
+                {% for article in value.categories %}
+                    <div class="col-md-{% if value.display_style == 'grid' %}3{% else %}6{% endif %}">
+                        {% include "news/includes/article_card.html" with article=article %}
+                    </div>
+                {% endfor %}
+            </div>
+        {% endif %}
+    </div>
+</section>

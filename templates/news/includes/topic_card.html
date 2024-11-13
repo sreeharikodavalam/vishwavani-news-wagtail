@@ -1,0 +1,12 @@
+{% load wagtailcore_tags wagtailimages_tags static %}
+<div class="topic-card">
+    {% if topic.featured_image %}
+        {% image topic.featured_image fill-200x200 class="topic-image" %}
+    {% endif %}
+    <h4 class="topic-name">{{ topic.name }}</h4>
+    <p class="topic-description">{{ topic.description|truncatewords:20 }}</p>
+    <div class="topic-stats">
+        <span class="article-count"><i class="far fa-newspaper"></i> {{ topic.article_count }}</span>
+        <span class="follower-count"><i class="far fa-user"></i> {{ topic.follower_count }}</span>
+    </div>
+</div>
